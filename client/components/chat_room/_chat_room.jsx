@@ -34,7 +34,7 @@ export const ChatRoom = () => {
           <Message key={message.id} message={message} />
         ))}
       </div>
-      <div>
+      <div className="chatbox">
         <input type="text" value={contents} onChange={(e) => setContents(e.target.value)} />
         <Button onClick={() => sendMessage(contents, user)}>Send</Button>
       </div>
