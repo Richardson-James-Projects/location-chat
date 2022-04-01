@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../utils/api_context';
-import { Button } from '../common/button';
-import { Link, Route, Routes } from 'react-router-dom';
+import { useNavigate, Route, Routes } from 'react-router-dom';
 import { Rooms } from './rooms';
 import { Room } from './room';
 import { ChatRoom } from '../chat_room/_chat_room';
@@ -9,7 +8,7 @@ import { NewRoomModal } from './new_room_modal';
 
 export const Home = () => {
   const api = useContext(ApiContext);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [chatRooms, setChatRooms] = useState([]);
 
@@ -33,6 +32,7 @@ export const Home = () => {
     setIsOpen(false);
     const { chatRoom } = await api.post('/chat_rooms', { name });
     setChatRooms([...chatRooms, chatRoom]);
+    navigate(`chat_rooms/${chatRoom.id}`);
   };
 
   return (
