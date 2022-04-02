@@ -14,7 +14,6 @@ export const ChatRoom = () => {
   const api = useContext(ApiContext);
   const { id } = useParams();
   const [messages, sendMessage] = useMessages(chatRoom);
-  
   useEffect(async () => {
     setLoading(true);
     if (!user) {
