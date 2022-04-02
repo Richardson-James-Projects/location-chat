@@ -25,6 +25,14 @@ export const useMessages = (chatRoom) => {
         messagesRef.current.push(message);
         setMessages([...messagesRef.current]);
       });
+
+      socket.on('initial-messages', (messages) => {
+        // console.log(messages);
+        messagesRef.current = [];
+        // setMessages(messages);
+        setMessages([]);
+      });
+
       return () => {
         socket.off('message');
         socket.off('initial-messages');

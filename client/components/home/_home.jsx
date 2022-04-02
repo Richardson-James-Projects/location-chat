@@ -9,7 +9,7 @@ import { NewRoomModal } from './new_room_modal';
 export const Home = () => {
   const api = useContext(ApiContext);
   const navigate = useNavigate();
-
+  
   const [chatRooms, setChatRooms] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ export const Home = () => {
   useEffect(async () => {
     const res = await api.get('/users/me');
     const { chatRooms } = await api.get('/chat_rooms');
-    console.log(chatRooms);
+    console.log(chatRooms + "\n HELLO WORLD!!");
     setChatRooms(chatRooms);
     setUser(res.user);
     setLoading(false);
