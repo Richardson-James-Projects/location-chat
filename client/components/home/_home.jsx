@@ -43,9 +43,6 @@ export const Home = () => {
     let latitude = lat;
     let longitude = lon;
     const { chatRoom } = await api.post('/chat_rooms', { name, latitude, longitude });
-    // console.log(latitude);
-    // console.log(longitude);
-    // console.log(chatRoom);
     setChatRooms([...chatRooms, chatRoom]);
     navigate(`chat_rooms/${chatRoom.id}`);
   };
