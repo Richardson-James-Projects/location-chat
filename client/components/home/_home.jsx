@@ -11,6 +11,8 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const [chatRooms, setChatRooms] = useState([]);
+  const [lat, setLat] = useState(0);
+  const [lon, setLon] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -21,6 +23,14 @@ export const Home = () => {
     console.log(chatRooms);
     setChatRooms(chatRooms);
     setUser(res.user);
+
+    navigator.geolocation.getCurrentPosition((location) => {
+      setLat(location.coords.latitude);
+      setLon(location.coords.longitude);
+    }, (err) => {
+      console.log(err);
+    });
+
     setLoading(false);
   }, []);
 
@@ -30,7 +40,12 @@ export const Home = () => {
 
   const createRoom = async (name) => {
     setIsOpen(false);
-    const { chatRoom } = await api.post('/chat_rooms', { name });
+    let latitude = lat;
+    let longitude = lon;
+    const { chatRoom } = await api.post('/chat_rooms', { name, latitude, longitude });
+    // console.log(latitude);
+    // console.log(longitude);
+    // console.log(chatRoom);
     setChatRooms([...chatRooms, chatRoom]);
     navigate(`chat_rooms/${chatRoom.id}`);
   };
@@ -39,11 +54,17 @@ export const Home = () => {
     <div className="container">
       <Rooms>
         {chatRooms.map((room) => {
-          return (
-            <Room key={room.id} to={`chat_rooms/${room.id}`}>
-              {room.name}
-            </Room>
-          );
+          let latDif = Math.abs(Math.abs(lat) - Math.abs(room.latitude));
+          let lonDif = Math.abs(Math.abs(lon) - Math.abs(room.longitude));
+          if (latDif < 1 && lonDif < 1) {
+            return (
+              <Room key={room.id} to={`chat_rooms/${room.id}`}>
+                {room.name}
+              </Room>
+            );
+          } else {
+            return (<div key={room.id}></div>);
+          }
         })}
         <Room action={() => setIsOpen(true)}>+</Room>
       </Rooms>
